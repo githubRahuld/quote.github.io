@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <title>Quotes App</title>
+</head>
+<body>
+    <!--<div id="quotes"></div>
+    <div id="author"></div>
+    <button id="newQ">New Quote</button>
+    <button id="tweetMe">Tweet</button>>-->
+
+    <div class="container">
+        <!--inner box-->
+        <div class="inner">
+            <div class="box">
+                <p class="number">
+                    <img src="images/logo-twitter-png-5860.png" alt="tweetMe" title="TweetMe" id="tweetMe">
+                </p>
+
+                <!--text area for quotes and author -->
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" ></p>
+                    <p id="author" class="author"></p>
+                </div>
+
+            <!--for new quote button -->
+                <label class="button">
+                    <p id="newQ">New Quote</p>
+                </label>
+            </div>
+        </div>
+    </div>
+    <script>   
+
+    const quotes = document.getElementById("quotes");
+    const author = document.getElementById("author");
+    const newQ = document.getElementById("newQ");
+    const tweetMe = document.getElementById("tweetMe");
+
+    let realData = "";
+    let quotesData = "";
+
+    const tweekNow = () =>{
+        let tweetPost = `https://twitter.com/intent/tweet?text=${quotesData.text}`;
+        window.open(tweetPost);
+    };
+
+    const getNewQuote = () =>{
+        let rnum = Math.floor(Math.random()  * 100);
+        quotesData = realData[rnum];
+       quotes.innerText = `${quotesData.text}`;
+       //using ternary operators
+       //check condition when no authon of quote
+       quotesData.author == null ? (author.innerText = "Unknown" ): (author.innerText = `${quotesData.author}`);
+       
+        //console.log(rnum);
+        // console.log(realData[rnum].text);
+        // console.log(realData[rnum].author);
+    };
+    const getQuotes = async () =>{
+        const api = "https://type.fit/api/quotes";
+        try {
+            let data = await fetch(api); //await used when data is render form API
+            realData = await data.json(); //convert int o json format
+            getNewQuote();
+        } catch (error) {
+            
+        }
+    };
+    getQuotes(); 
+
+    tweetMe.addEventListener('click',tweekNow);
+    newQ.addEventListener('click',getNewQuote);
+    </script>
+</body>
+</html>
